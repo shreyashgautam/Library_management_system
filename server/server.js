@@ -17,11 +17,6 @@ const ShopOrderRouter=require('./routes/shop/order-routes')
 
 const shopAddressRouter=require('./routes/shop/address-routes')
 // ✅ Correct MongoDB connection with error handling
-mongoose
-mongoose.connect('mongodb+srv://shreyashgautam2007:shreyash@cluster0.sltva.mongodb.net/')
-    .then(() => console.log("✅ Connected to MongoDB"))
-    .catch((error) => console.error("❌ MongoDB connection error:", error));
-
 
 app.use(
     cors({
