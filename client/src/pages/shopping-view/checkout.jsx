@@ -6,6 +6,7 @@ import { Button } from "../../components/ui/button";
 import { useState } from "react";
 import { useToast } from "../../hooks/use-toast";
 import { createNewOrder } from "../../store/shop/order-slice";
+import axios from "axios"; // Import axios
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -27,7 +28,7 @@ function ShoppingCheckout() {
         )
       : 0;
 
-  function handlePlaceOrder() {
+  async function handlePlaceOrder() {
     if (cartItems.length === 0) {
       toast({ title: "Your cart is empty. Please add items to proceed", variant: "destructive" });
       return;
@@ -39,6 +40,7 @@ function ShoppingCheckout() {
 
     const orderData = {
       userId: user?.id,
+      userEmail: user?.email, // Add user email for order confirmation
       cartId: cartItems?._id,
       cartItems: cartItems.items.map((singleCartItem) => ({
         productId: singleCartItem?.productId,
@@ -65,13 +67,17 @@ function ShoppingCheckout() {
       payerId: "",
     };
 
-    dispatch(createNewOrder(orderData)).then((data) => {
-      if (data?.payload?.success) {
-        toast({ title: "Order placed successfully!", variant: "success" });
+    try {
+      const response = await axios.post("http://localhost:5001/api/shop/order/place-order", orderData);
+      if (response.data.success) {
+        toast({ title: "Order placed successfully! Check your email for confirmation.", variant: "success" });
       } else {
         toast({ title: "Failed to place order. Try again.", variant: "destructive" });
       }
-    });
+    } catch (error) {
+      console.error("Order error:", error);
+      toast({ title: "An error occurred while placing the order.", variant: "destructive" });
+    }
   }
 
   return (
@@ -85,12 +91,6 @@ function ShoppingCheckout() {
           {cartItems && cartItems.items && cartItems.items.length > 0
             ? cartItems.items.map((item) => <UserCartItemsContent key={item.productId} cartItem={item} />)
             : null}
-          <div className="mt-8 space-y-4">
-            <div className="flex justify-between">
-              <span className="font-bold">Total</span>
-              <span className="font-bold">${totalCartAmount}</span>
-            </div>
-          </div>
           <div className="mt-4 w-full">
             <Button onClick={handlePlaceOrder} className="w-full">Place Order</Button>
           </div>

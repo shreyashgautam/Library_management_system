@@ -42,19 +42,17 @@ function ShoppingOrders() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Loan History</CardTitle>
+        <CardTitle>Borrow History</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Loan ID</TableHead>
-              <TableHead>Loan Date</TableHead>
-              <TableHead>Loan Status</TableHead>
-              <TableHead>Loan Price</TableHead>
-              <TableHead>
-                <span className="sr-only">Details</span>
-              </TableHead>
+              <TableHead>Borrow ID</TableHead>
+              <TableHead>Borrow Date</TableHead>
+              <TableHead>Borrow Status</TableHead>
+              <TableHead>Details</TableHead>
+              
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,7 +74,7 @@ function ShoppingOrders() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                  
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

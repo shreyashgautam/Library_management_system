@@ -7,9 +7,8 @@ const ProductSchema = new mongoose.Schema(
     description: String,
     category: String,
     brand: String,
-    price: Number,
-    salePrice: Number,
-    totalStock: Number
+    totalStock: Number,
+    link: String, // ✅ Ensure this field exists
   },
   { timestamps: true }
 );

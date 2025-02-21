@@ -10,8 +10,12 @@ import ShoppingLayout from './components/shopping-view/layout';
 import NotFound from './pages/notfound';
 import ShoppingHome from './pages/shopping-view/Home';
 import ShoppingListing from './pages/shopping-view/listing';
+import SearchProducts from './pages/shopping-view/search';
 import ShoppingCheckout from './pages/shopping-view/checkout';
+import BookSuggestions from './pages/shopping-view/rule';
+import ShoppingTour from './pages/shopping-view/tour';
 import ShoppingAccount from './pages/shopping-view/account';
+import ShoppingAbout from './pages/shopping-view/about';
 import CheckAuth from './components/common/check-auth';
 import UnAuth from './pages/un-auth/un-auth';
 import { useSelector } from 'react-redux';
@@ -57,8 +61,12 @@ function App() {
       <Route path='/shop' element={<CheckAuth isAuthenticated={isAuthenticated} user={user}><ShoppingLayout/></CheckAuth>}> 
       <Route path='home' element={<ShoppingHome/>}> </Route>
       <Route path='listing' element={<ShoppingListing/>}> </Route>
+      <Route path="search" element={<SearchProducts />} />
       <Route path='checkout' element={<ShoppingCheckout/>}> </Route>
       <Route path='account' element={<ShoppingAccount/>}> </Route>
+      <Route path='suggestions' element={<BookSuggestions/>}> </Route>
+      <Route path='tour' element={<ShoppingTour/>}> </Route>
+      <Route path='about' element={<ShoppingAbout/>}> </Route>
       </Route>
       <Route path="/unauth-page" element={<UnAuth/>}></Route>
       <Route path="*" element={<NotFound/>}></Route>

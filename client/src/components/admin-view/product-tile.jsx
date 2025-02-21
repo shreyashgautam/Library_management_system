@@ -20,20 +20,10 @@ function AdminProductTile({
         </div>
         <CardContent>
           <h2 className="text-xl font-bold mb-2 mt-2">{product?.title}</h2>
-          <div className="flex justify-between items-center mb-2">
-            <span
-              className={`text-lg font-semibold text-primary ${
-                product?.salePrice > 0 ? "line-through" : ""
-              }`}
-            >
-              ${product?.price}
-            </span>
-            {product?.salePrice > 0 && (
-              <span className="text-lg font-bold text-red-500">${product?.salePrice}</span>
-            )}
-          </div>
+          
+         
         </CardContent>
-        <CardFooter className="flex justify-between items-center">
+        <CardFooter className="flex justify-between items-center gap-2">
           <Button
             onClick={() => {
               setOpenCreateProductsDialog(true);
@@ -46,6 +36,7 @@ function AdminProductTile({
           <Button variant="destructive" onClick={() => handleDelete(product?._id)}>
             Delete
           </Button>
+         
         </CardFooter>
       </div>
     </Card>

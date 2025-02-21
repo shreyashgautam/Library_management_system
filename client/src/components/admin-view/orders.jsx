@@ -41,18 +41,18 @@ function AdminOrdersView() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>All Orders</CardTitle>
+        <CardTitle>All Borrowed</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order ID</TableHead>
-              <TableHead>Order Date</TableHead>
-              <TableHead>Order Status</TableHead>
-              <TableHead>Order Price</TableHead>
+              <TableHead>Borrowed ID</TableHead>
+              <TableHead>Borrowed Date</TableHead>
+              <TableHead>Borrowed Status</TableHead>
+             
               <TableHead>
-                <span className="sr-only">Details</span>
+                Details
               </TableHead>
             </TableRow>
           </TableHeader>
@@ -75,7 +75,7 @@ function AdminOrdersView() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                  
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

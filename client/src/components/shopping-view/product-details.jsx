@@ -2,10 +2,9 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllFilteredProducts, setProductDetails } from "../../store/shop/product-slice"; // ✅ Import this
+import { fetchAllFilteredProducts, setProductDetails } from "../../store/shop/product-slice"; 
 import { useToast } from "../../hooks/use-toast";
-import { addToCart } from "../../store/shop/cart-slice";
-
+import { addToCart } from "../../store/shop/cart-slice"; // Still using this function for borrowing
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const dispatch = useDispatch();
@@ -13,15 +12,12 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const { toast } = useToast();
   const { cartItems } = useSelector((state) => state.shopCart);
 
-  
-
   function handleDialogClose() {
     setOpen(false);
     dispatch(setProductDetails());
   }
 
-  function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    console.log(cartItems);
+  function handleAddToCart(getCurrentProductId, getTotalStock) {
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -32,10 +28,9 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         const getQuantity = getCartItems[indexOfCurrentItem].quantity;
         if (getQuantity + 1 > getTotalStock) {
           toast({
-            title: `Only ${getQuantity} quantity can be added for this item`,
+            title: `Only ${getQuantity} quantity can be borrowed for this item`,
             variant: "destructive",
           });
-
           return;
         }
       }
@@ -51,71 +46,74 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       if (data?.payload?.success) {
         dispatch(fetchAllFilteredProducts(user?.id));
         toast({
-          title: "Product is added to cart",
+          title: "Product added to borrow list",
         });
       }
     });
   }
 
-  function handleDialogClose(){
-    setOpen(false);
-
-    dispatch(setProductDetails());
-  }
-
   return (
     <Dialog open={open} onOpenChange={handleDialogClose}>
-      <DialogContent className="grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw]">
+      <DialogContent className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:p-10 max-w-[90vw] sm:max-w-[80vw] lg:max-w-[70vw] bg-white rounded-lg shadow-lg">
+        
+        {/* 🟢 Product Image */}
         <div className="relative overflow-hidden rounded-lg">
           <img
             src={productDetails?.image}
             alt={productDetails?.title}
-            width={600}
-            height={600}
-            className="aspect-square w-full object-cover"
+            className="aspect-square w-full object-cover rounded-lg border"
           />
         </div>
-        <div className="">
+
+        {/* 🟢 Product Information */}
+        <div className="flex flex-col justify-between">
           <div>
-            <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
-            <p className="text-muted-foreground text-2xl mb-5 mt-4">
-              {productDetails?.description}
-            </p>
+            <h1 className="text-4xl font-bold text-gray-900">{productDetails?.title}</h1>
+            <p className="text-gray-600 text-lg mt-2">{productDetails?.description}</p>
+            
+            {/* Category & Brand */}
+            <div className="mt-4 space-y-2">
+              <p className="text-gray-700 font-semibold">Category: <span className="text-gray-500">{productDetails?.category}</span></p>
+              <p className="text-gray-700 font-semibold">Floor: <span className="text-gray-500">{productDetails?.brand}</span></p>
+            </div>
           </div>
-          <div className="flex items-center justify-between">
-            <p
-              className={`text-3xl font-bold text-primary ${
-                productDetails?.salePrice > 0 ? "line-through" : ""
-              }`}
-            >
-              ${productDetails?.price}
-            </p>
-            {productDetails?.salePrice > 0 ? (
-              <p className="text-2xl font-bold text-muted-foreground">
-                ${productDetails?.salePrice}
-              </p>
-            ) : null}
-          </div>
-          <div className="mt-5 mb-5">
+
+          {/* 🟢 Buttons */}
+          <div className="flex flex-col gap-4 mt-6">
             {productDetails?.totalStock === 0 ? (
-              <Button className="w-full opacity-60 cursor-not-allowed">
+              <Button className="w-full bg-gray-400 cursor-not-allowed" disabled>
                 Out of Stock
               </Button>
             ) : (
-                <Button
-                className="w-full"
+              <Button
+                className="w-full bg-black hover:bg-black-700 text-white font-semibold py-3 rounded-lg"
                 onClick={() =>
-                  handleAddtoCart(
+                  handleAddToCart(
                     productDetails?._id,
                     productDetails?.totalStock
                   )
                 }
               >
-                Add to Cart
+                BORROW
               </Button>
             )}
+
+            {/* 🟢 Online Button - Opens link in new tab */}
+            {  (
+              <a
+                href={productDetails?.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full"
+              >
+                <Button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg">
+                  ONLINE
+                </Button>
+              </a>
+            )}
           </div>
-          <Separator />
+
+          <Separator className="mt-6" />
         </div>
       </DialogContent>
     </Dialog>

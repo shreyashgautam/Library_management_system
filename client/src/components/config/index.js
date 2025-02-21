@@ -45,66 +45,108 @@ export const RegisterFormControls = [
 
   export const addProductFormElements = [
     {
-      label: "Title",
-      name: "title",
+        label: "Title",
+        name: "title",
+        componentType: "input",
+        type: "text",
+        placeholder: "Enter product title",
+    },
+    {
+        label: "Description",
+        name: "description",
+        componentType: "textarea",
+        placeholder: "Enter product description",
+    },
+    {
+      label: "Author",
+      name: "Author",
+      componentType: "textarea",
+      placeholder: "Enter Author name",
+  },
+    {
+        label: "Category",
+        name: "category",
+        componentType: "select",
+        options: [
+            { id: "Maths", label: "Maths" },
+            { id: "Law", label: "Law" },
+            { id: "Science", label: "Science" },
+            { id: "Research", label: "Research" },
+            { id: "Novel", label: "Novel" },
+        ],
+    },
+    {
+        label: "Brand",
+        name: "brand",
+        componentType: "select",
+        options: [
+            { id: "1ST FLOOR", label: "1ST FLOOR" },
+            { id: "2ND FLOOR", label: "2ND FLOOR" },
+            { id: "3RD FLOOR", label: "3RD FLOOR" },
+            { id: "GROUND FLOOR", label: "GROUND FLOOR" },
+       
+        ],
+    },
+    {
+        label: "Total Stock",
+        name: "totalStock",
+        componentType: "input",
+        type: "number",
+        placeholder: "Enter total stock",
+    },
+    {
+        label: "Product Link",
+        name: "link",
+        componentType: "input",
+        type: "text",
+        placeholder: "Enter product link",
+    },
+];
+
+
+
+export const bookSuggestionFormElements = [
+  {
+      label: "Book Name",
+      name: "bookName",
       componentType: "input",
       type: "text",
-      placeholder: "Enter product title",
-    },
-    {
-      label: "Description",
-      name: "description",
-      componentType: "textarea",
-      placeholder: "Enter product description",
-    },
-    {
+      placeholder: "Enter book name",
+  },
+  {
+      label: "Author",
+      name: "author",
+      componentType: "input",
+      type: "text",
+      placeholder: "Enter author's name",
+  },
+  {
       label: "Category",
       name: "category",
       componentType: "select",
       options: [
-        { id: "men", label: "Men" },
-        { id: "women", label: "Women" },
-        { id: "kids", label: "Kids" },
-        { id: "accessories", label: "Accessories" },
-        { id: "footwear", label: "Footwear" },
+          { id: "Maths", label: "Maths" },
+          { id: "Law", label: "Law" },
+          { id: "Science", label: "Science" },
+          { id: "Research", label: "Research" },
+          { id: "Novel", label: "Novel" },
       ],
-    },
-    {
-      label: "Brand",
-      name: "brand",
-      componentType: "select",
-      options: [
-        { id: "nike", label: "Nike" },
-        { id: "adidas", label: "Adidas" },
-        { id: "puma", label: "Puma" },
-        { id: "levi", label: "Levi's" },
-        { id: "zara", label: "Zara" },
-        { id: "h&m", label: "H&M" },
-      ],
-    },
-    {
-      label: "Price",
-      name: "price",
+  },
+  {
+      label: "Requested By",
+      name: "requesterName",
       componentType: "input",
-      type: "number",
-      placeholder: "Enter product price",
-    },
-    {
-      label: "Sale Price",
-      name: "salePrice",
+      type: "text",
+      placeholder: "Enter your name",
+  },
+  {
+      label: "Book Link",
+      name: "bookLink",
       componentType: "input",
-      type: "number",
-      placeholder: "Enter sale price (optional)",
-    },
-    {
-      label: "Total Stock",
-      name: "totalStock",
-      componentType: "input",
-      type: "number",
-      placeholder: "Enter total stock",
-    },
-  ];
-
+      type: "text",
+      placeholder: "Enter book link (if available)",
+  },
+];
 
 export const shoppingViewHeaderMenuItems = [
   {
@@ -113,35 +155,13 @@ export const shoppingViewHeaderMenuItems = [
     path: "/shop/home",
   },
   {
-    id: "products",
-    label: "Products",
+    id: "books",
+    label: "Books",
     path: "/shop/listing",
   },
-  {
-    id: "men",
-    label: "Men",
-    path: "/shop/listing",
-  },
-  {
-    id: "women",
-    label: "Women",
-    path: "/shop/listing",
-  },
-  {
-    id: "kids",
-    label: "Kids",
-    path: "/shop/listing",
-  },
-  {
-    id: "footwear",
-    label: "Footwear",
-    path: "/shop/listing",
-  },
-  {
-    id: "accessories",
-    label: "Accessories",
-    path: "/shop/listing",
-  },
+  
+ 
+  
   {
     id: "search",
     label: "Search",
@@ -150,37 +170,36 @@ export const shoppingViewHeaderMenuItems = [
 ];
 
 export const categoryOptionsMap = {
-  men: "Men",
-  women: "Women",
-  kids: "Kids",
-  accessories: "Accessories",
-  footwear: "Footwear",
+  LAW: "LAW",
+  MATHS: "MATHS",
+  RESEARCH: "RESEARCH",
+  SCIENCE: "SCIENCE",
+  NOVEL: "NOVEL",
 };
 
 export const brandOptionsMap = {
-  nike: "Nike",
-  adidas: "Adidas",
-  puma: "Puma",
-  levi: "Levi",
+  "1STFLOOR": "1ST FLOOR",
+  "2NDFLOOR": "2ND FLOOR",
+  "3RDFLOOR": "3RD FLOOR",
+  "GROUNDFLOOR": "GROUND FLOOR",
   zara: "Zara",
   "h&m": "H&M",
 };
 
 export const filterOptions = {
   category: [
-    { id: "men", label: "Men" },
-    { id: "women", label: "Women" },
-    { id: "kids", label: "Kids" },
-    { id: "accessories", label: "Accessories" },
-    { id: "footwear", label: "Footwear" },
+    { id: "Law", label: "LAW" },
+    { id: "Maths", label: "MATHS" },
+    { id: "Research", label: "RESEARCH" },
+    { id: "Science", label: "SCIENCE" },
+    { id: "Novel", label: "NOVEL" },
   ],
-  brand: [
-    { id: "nike", label: "Nike" },
-    { id: "adidas", label: "Adidas" },
-    { id: "puma", label: "Puma" },
-    { id: "levi", label: "Levi's" },
-    { id: "zara", label: "Zara" },
-    { id: "h&m", label: "H&M" },
+  Floor: [
+    { id: "1STFLOOR", label: "1ST FLOOR" },
+    { id: "2NDFLOOR", label: "2ND FLOOR" },
+    { id: "3RDFLOOR", label: "3RD FLOOR" },
+    { id: "GROUNDFLOOR", label: "GROUND FLOOR" },
+   
   ],
 };
 
@@ -189,20 +208,4 @@ export const sortOptions = [
   { id: "price-hightolow", label: "Price: High to Low" },
   { id: "title-atoz", label: "Title: A to Z" },
   { id: "title-ztoa", label: "Title: Z to A" },
-];
-export const addressFormControls = [
-  {
-    label: "Phone",
-    name: "phone",
-    componentType: "input",
-    type: "number",
-    placeholder: "Enter your phone number",
-  },
-  {
-    label: "Duration",
-    name: "duration",
-    componentType: "input",
-    type: "number",
-    placeholder: "Enter duration",
-  },
 ];
