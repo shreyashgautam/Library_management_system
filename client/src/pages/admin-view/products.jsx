@@ -92,7 +92,7 @@ function AdminProducts() {
     return (
         <Fragment>
             <div className="mb-5 flex justify-end w-full">
-                <Button onClick={() => setOpenCreateProductsDialog(true)}>Add New Product</Button>
+                <Button onClick={() => setOpenCreateProductsDialog(true)}>Add New Books</Button>
             </div>
             <div className="gap-4 grid md:grid-cols-3 lg:grid-cols-4">
                 {productList?.length > 0 ? productList.map((productItem) => (
@@ -127,7 +127,7 @@ function AdminProducts() {
                             </Button>
                         )}
                     </div>
-                )) : <p className="text-center text-gray-500 col-span-3">No products available.</p>}
+                )) : <p className="text-center text-gray-500 col-span-3">No Books available.</p>}
             </div>
 
             {/* Sheet Modal for Adding New Product */}

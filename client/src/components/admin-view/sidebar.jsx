@@ -8,6 +8,7 @@ import {
   } from "lucide-react";
   import { Fragment } from "react";
   import { useNavigate } from "react-router-dom";
+  // AddBarCode
 
   import {Sheet} from '../ui/sheet.jsx'
   import {SheetContent} from '../ui/sheet.jsx'
@@ -24,16 +25,23 @@ import {
     },
     {
       id: "products",
-      label: "Products",
+      label: "Books",
       path: "/admin/products",
       icon:<ShoppingCart />,
     },
     {
       id: "orders",
-      label: "Orders",
+      label: "Borrow",
       path: "/admin/orders",
       icon:<ListOrdered />,
     },
+    {
+      id: "AddBarCode",
+      label: "AddBarCode",
+      path: "/admin/AddBarCode",
+      icon:<ListOrdered />,
+    },
+    
   ];
   
   function MenuItems({setOpen}) {

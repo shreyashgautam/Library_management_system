@@ -1,6 +1,7 @@
 import { Button } from "../../components/ui/button";
 import aImage from '../../assets/a.png';
 import bImage from '../../assets/b.png';
+import cImage from '../../assets/c.png';
 import dImage from '../../assets/d.png';
 import { MorphingText } from "../../components/magicui/morphing-text";
 import { NumberTicker } from "../..//components/magicui/number-ticker";
@@ -98,7 +99,7 @@ const brandsWithIcon = [
   { id: "Ground Floor", label: "Ground Floor", icon: Airplay },
 
 ];
-const sliderImages = [aImage, bImage, dImage];
+const sliderImages = [aImage, bImage,cImage, dImage];
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { productList, productDetails } = useSelector(
@@ -310,7 +311,7 @@ function ShoppingHome() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">
-          <TypingAnimation>RECENTLY ACCESSED</TypingAnimation>
+          <TypingAnimation>BOOKS</TypingAnimation>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0

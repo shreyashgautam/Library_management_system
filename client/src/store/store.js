@@ -11,6 +11,7 @@ import adminOrderSlice from "./admin/order-slice";
 
 import shopSearchSlice from "./shop/search-slice";
 
+import roomReducer from "./shop/room-slice";
 import SuggestionsSlice from "./shop/suggestion-slice";
 const store=configureStore({
     reducer:{
@@ -24,6 +25,7 @@ const store=configureStore({
         adminOrder: adminOrderSlice,
         shopSearch: shopSearchSlice,
         suggestions: SuggestionsSlice,
+        rooms: roomReducer,
         
     },
 })

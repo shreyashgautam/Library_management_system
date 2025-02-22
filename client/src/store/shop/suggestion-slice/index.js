@@ -10,10 +10,7 @@ const initialState = {
 export const addNewSuggestion = createAsyncThunk(
   "/suggestions/addNewSuggestion",
   async (formData) => {
-    const response = await axios.post(
-      "http://localhost:5001/api/shop/suggestions/add",
-      formData
-    );
+    const response = await axios.post("http://localhost:5001/api/shop/suggestions", formData);
 
     return response.data;
   }

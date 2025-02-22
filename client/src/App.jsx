@@ -6,16 +6,20 @@ import AdminLayout from './components/admin-view/layout';
 import AdminDashboard from './pages/admin-view/dashboard';
 import AdminOrders from './pages/admin-view/orders';
 import AdminProducts from './pages/admin-view/products';
+import AddBarCode from './pages/admin-view/AddBarCode';
+
 import ShoppingLayout from './components/shopping-view/layout';
 import NotFound from './pages/notfound';
 import ShoppingHome from './pages/shopping-view/Home';
 import ShoppingListing from './pages/shopping-view/listing';
 import SearchProducts from './pages/shopping-view/search';
+import RFID from './pages/shopping-view/RFID';
 import ShoppingCheckout from './pages/shopping-view/checkout';
 import BookSuggestions from './pages/shopping-view/rule';
 import ShoppingTour from './pages/shopping-view/tour';
 import ShoppingAccount from './pages/shopping-view/account';
 import ShoppingAbout from './pages/shopping-view/about';
+import VenueBooking from './pages/shopping-view/VenueBooking';
 import CheckAuth from './components/common/check-auth';
 import UnAuth from './pages/un-auth/un-auth';
 import { useSelector } from 'react-redux';
@@ -55,6 +59,8 @@ function App() {
       <Route path="layout" element={<AdminLayout/>}></Route>
       <Route path="products" element={<AdminProducts/>}></Route>
       <Route path="orders" element={<AdminOrders/>}></Route>
+      <Route path="AddBarCode" element={<AddBarCode/>}></Route>
+      
       </Route>
 
 
@@ -66,6 +72,8 @@ function App() {
       <Route path='account' element={<ShoppingAccount/>}> </Route>
       <Route path='suggestions' element={<BookSuggestions/>}> </Route>
       <Route path='tour' element={<ShoppingTour/>}> </Route>
+      <Route path='VenueBooking' element={<VenueBooking/>}> </Route>
+      <Route path='RFID' element={<RFID/>}> </Route>
       <Route path='about' element={<ShoppingAbout/>}> </Route>
       </Route>
       <Route path="/unauth-page" element={<UnAuth/>}></Route>

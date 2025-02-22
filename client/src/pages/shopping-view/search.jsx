@@ -16,41 +16,29 @@ function SearchProducts() {
   const [keyword, setKeyword] = useState("");
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-
   const dispatch = useDispatch();
   const { searchResults } = useSelector((state) => state.shopSearch);
-  const { productList, productDetails } = useSelector((state) => state.shoppingProducts);
-  const { cartItems } = useSelector((state) => state.shopCart);
-  const { user } = useSelector((state) => state.auth);
-  const { toast } = useToast();
+  const { productDetails } = useSelector((state) => state.shoppingProducts);
 
-  // Fetch search results when keyword changes
+  const { user } = useSelector((state) => state.auth);
+
+  const { cartItems } = useSelector((state) => state.shopCart);
+  const { toast } = useToast();
   useEffect(() => {
-    if (keyword.trim().length > 3) {
-      setSearchParams(new URLSearchParams(`?keyword=${keyword.trim()}`));
-      dispatch(getSearchResults(keyword.trim()));
+    if (keyword && keyword.trim() !== "" && keyword.trim().length > 3) {
+      setTimeout(() => {
+        setSearchParams(new URLSearchParams(`?keyword=${keyword}`));
+        dispatch(getSearchResults(keyword));
+      }, 1000);
     } else {
-      setSearchParams(new URLSearchParams(""));
+      setSearchParams(new URLSearchParams(`?keyword=${keyword}`));
       dispatch(resetSearchResults());
     }
-  }, [keyword, dispatch]);
+  }, [keyword]);
 
-  // Debugging: Log search results
-  useEffect(() => {
-    console.log("Search results:", searchResults);
-  }, [searchResults]);
-
-  // Handle adding to cart
-  function handleAddToCart(getCurrentProductId, getTotalStock) {
-    if (!user?.id) {
-      toast({
-        title: "Please log in to add items to the cart",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    let getCartItems = cartItems?.items || [];
+  function handleAddtoCart(getCurrentProductId, getTotalStock) {
+    console.log(cartItems);
+    let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
       const indexOfCurrentItem = getCartItems.findIndex(
@@ -63,6 +51,7 @@ function SearchProducts() {
             title: `Only ${getQuantity} quantity can be added for this item`,
             variant: "destructive",
           });
+
           return;
         }
       }
@@ -70,35 +59,33 @@ function SearchProducts() {
 
     dispatch(
       addToCart({
-        userId: user.id,
+        userId: user?.id,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user.id));
+        dispatch(fetchCartItems(user?.id));
         toast({
-          title: "Product added to cart",
+          title: "Product is added to cart",
         });
       }
     });
   }
 
-  // Fetch product details and open dialog
   function handleGetProductDetails(getCurrentProductId) {
-    dispatch(fetchProductDetails(getCurrentProductId)).then((data) => {
-      if (data?.payload) {
-        setOpenDetailsDialog(true);
-      }
-    });
+    console.log(getCurrentProductId);
+    dispatch(fetchProductDetails(getCurrentProductId));
   }
 
-  // Use search results if searching, otherwise show productList
-  const displayedProducts = keyword.trim().length > 3 ? searchResults : productList;
+  useEffect(() => {
+    if (productDetails !== null) setOpenDetailsDialog(true);
+  }, [productDetails]);
+
+  console.log(searchResults, "searchResults");
 
   return (
     <div className="container mx-auto md:px-6 px-4 py-8">
-      {/* Search Bar */}
       <div className="flex justify-center mb-8">
         <div className="w-full flex items-center">
           <Input
@@ -110,33 +97,23 @@ function SearchProducts() {
           />
         </div>
       </div>
-
-      {/* No results message */}
-      {keyword.trim().length > 3 && searchResults.length === 0 ? (
-        <h1 className="text-5xl font-extrabold text-center">No result found!</h1>
+      {!searchResults.length ? (
+        <h1 className="text-5xl font-extrabold">No result found!</h1>
       ) : null}
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {displayedProducts.length > 0 &&
-          displayedProducts.map((productItem) => (
-            <ShoppingProductTile
-              key={productItem._id}
-              handleGetProductDetails={handleGetProductDetails}
-              product={productItem}
-              handleAddToCart={handleAddToCart}
-            />
-          ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        {searchResults.map((item) => (
+          <ShoppingProductTile
+            handleAddtoCart={handleAddtoCart}
+            product={item}
+            handleGetProductDetails={handleGetProductDetails}
+          />
+        ))}
       </div>
-
-      {/* Product Details Dialog */}
-      {productDetails && (
-        <ProductDetailsDialog
-          open={openDetailsDialog}
-          setOpen={setOpenDetailsDialog}
-          productDetails={productDetails}
-        />
-      )}
+      <ProductDetailsDialog
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+        productDetails={productDetails}
+      />
     </div>
   );
 }

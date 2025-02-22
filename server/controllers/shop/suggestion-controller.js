@@ -2,9 +2,13 @@ const Suggestion = require("../../models/Suggestion");
 
 const addNewSuggestion = async (req, res) => {
   try {
-    const { bookName, author, category, requestedBy, bookLink } = req.body;
+    console.log("Incoming Request Data:", req.body);
 
-    if (!bookName || !author || !category || !requestedBy) {
+    const { bookName, author, category, requestedBy, requesterName, bookLink } = req.body;
+
+    const finalRequestedBy = requestedBy || requesterName; // ✅ Handle both fields
+
+    if (!bookName || !author || !category || !finalRequestedBy) {
       return res.status(400).json({
         success: false,
         message: "All required fields must be provided!",
@@ -15,7 +19,7 @@ const addNewSuggestion = async (req, res) => {
       bookName,
       author,
       category,
-      requestedBy,
+      requestedBy: finalRequestedBy,  // ✅ Use corrected field
       bookLink,
     });
 

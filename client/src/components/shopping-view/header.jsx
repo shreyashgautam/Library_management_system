@@ -39,8 +39,8 @@ function MenuItems() {
         <Label
           key={menuItem.id}
           onClick={() => handleNavigate(menuItem)}
-          className="text-sm font-medium cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
-                     text-[#283618] dark:text-[#FEFAE0] 
+          className="text-sm font-large font-bold   cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                     text-[#283618]  text-l dark:text-[#FEFAE0] 
                      hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
         >
           {menuItem.label}
@@ -49,16 +49,16 @@ function MenuItems() {
       {/* Added Rules and About Us */}
       <Label
         onClick={() => navigate("/shop/suggestions")}
-        className="text-sm font-medium cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
-                   text-[#283618] dark:text-[#FEFAE0] 
+        className="text-sm font-medium font-bold cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                   text-[#283618]   text-l dark:text-[#FEFAE0] 
                    hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
       >
-        Rules
+        Suggesstion
       </Label>
       <Label
         onClick={() => navigate("/shop/tour")}
-        className="text-sm font-medium cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
-                   text-[#283618] dark:text-[#FEFAE0] 
+        className="text-sm font-medium font-bold  cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                   text-[#283618]  text-l dark:text-[#FEFAE0] 
                    hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
       >
         Tour
@@ -66,12 +66,28 @@ function MenuItems() {
       
       <Label
         onClick={() => navigate("/shop/about")}
-        className="text-sm font-medium cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
-                   text-[#283618] dark:text-[#FEFAE0] 
+        className="text-sm font-medium font-bold  cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                   text-[#283618]  text-l dark:text-[#FEFAE0] 
                    hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
       >
         About Us
       </Label>
+      <Label
+        onClick={() => navigate("/shop/VenueBooking")}
+        className="text-sm font-medium font-bold  cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                   text-[#283618] text-l dark:text-[#FEFAE0] 
+                   hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
+      > Room Reservation
+      </Label>
+      <Label
+        onClick={() => navigate("/shop/RFID")}
+        className="text-sm font-medium font-bold  cursor-pointer transition-all duration-300 px-4 py-2 rounded-md 
+                   text-[#283618] text-l dark:text-[#FEFAE0] 
+                   hover:text-[#FEFAE0] hover:bg-[#D4A373] dark:hover:bg-[#D4A373] transform hover:scale-105"
+      > RFID
+      </Label>
+
+      
     </nav>
   );
 }
@@ -88,7 +104,7 @@ function HeaderRightContent() {
   }
  
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
