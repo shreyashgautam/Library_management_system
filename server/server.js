@@ -1,37 +1,34 @@
+require("dotenv").config(); // Load environment variables
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const authRouter = require("./routes/auth/auth-routes");
-const adminProducts=require('./routes/admin/products-routes');
-const adminOrderRouter = require("./routes/admin/order-routes");
-
-const shopSearchRouter = require("./routes/shop/search-routes");
-const nodemailer=require('nodemailer')
+const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
 const fs = require("fs-extra");
 const path = require("path");
 
+const authRouter = require("./routes/auth/auth-routes");
+const adminProducts = require("./routes/admin/products-routes");
+const adminOrderRouter = require("./routes/admin/order-routes");
+const shopSearchRouter = require("./routes/shop/search-routes");
 const orderRouter = require("./routes/shop/ordermail-routes");
-const app = express();
-const PORT = process.env.PORT || 5001;
-const ShopProductsRouter=require('./routes/shop/product-routes')
-const ShopCartRouter=require('./routes/shop/cart-routes')
-const ShopOrderRouter=require('./routes/shop/ordermail-routes')
-
+const ShopProductsRouter = require("./routes/shop/product-routes");
+const ShopCartRouter = require("./routes/shop/cart-routes");
+const ShopOrderRouter = require("./routes/shop/ordermail-routes");
 const suggestionRoutes = require("./routes/shop/suggestion-routes");
-const shopAddressRouter=require('./routes/shop/address-routes')
-
+const shopAddressRouter = require("./routes/shop/address-routes");
 const suggmail = require("./routes/shop/suggmail-routes");
 
+const app = express();
+const PORT = process.env.PORT || 5001;
 
-
-// ✅ Correct MongoDB connection with error handling
+// ✅ Connect to MongoDB
 mongoose
-mongoose.connect('mongodb+srv://shreyashgautam2007:shreyash@cluster0.sltva.mongodb.net/')
+    .connect(process.env.MONGO_URI)
     .then(() => console.log("✅ Connected to MongoDB"))
     .catch((error) => console.error("❌ MongoDB connection error:", error));
-
 
 app.use(
     cors({
@@ -51,102 +48,79 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
+// ✅ Routes
 app.use("/api/auth", authRouter);
-app.use('/api/admin/products',adminProducts);
-app.use('/api/admin/orders',adminOrderRouter);
-
-
+app.use("/api/admin/products", adminProducts);
+app.use("/api/admin/orders", adminOrderRouter);
 app.use("/api/shop", orderRouter);
-
 app.use("/api/shop/products", ShopProductsRouter);
-app.use("/api/shop/cart",ShopCartRouter);
-
-app.use("/api/shop/address",shopAddressRouter);
-
-app.use("/api/shop/order",ShopOrderRouter);
-
+app.use("/api/shop/cart", ShopCartRouter);
+app.use("/api/shop/address", shopAddressRouter);
+app.use("/api/shop/order", ShopOrderRouter);
 app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/suggestions", suggestionRoutes);
 app.use("/api/suggestions", suggmail);
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+
+// ✅ Nodemailer Setup
+const transporter = nodemailer.createTransport({
+    secure: true,
+    host: "smtp.gmail.com",
+    port: 465,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
 });
 
-
-
-const transporter=nodemailer.createTransport(
-    {
-        secure:true,
-        host:'smtp.gmail.com',
-        port:465,
-        auth:{
-            user:'shreyashgautam2007@gmail.com',
-            pass:'dwks jvvl vbfd qgev'
-        }
-
-    }
-)
-
+// ✅ Send Email Function
 function sendMail(to, sub, msg) {
-    transporter.sendMail({
-        from: "shreyashgautam2007@gmail.com",
-        to: to,
-        subject: sub,
-        html: msg,
-    }, (err, info) => {
-        if (err) {
-            console.error("Error sending mail:", err);
-        } else {
-            console.log("Email sent successfully:", info.response);
+    transporter.sendMail(
+        {
+            from: process.env.EMAIL_USER,
+            to: to,
+            subject: sub,
+            html: msg,
+        },
+        (err, info) => {
+            if (err) {
+                console.error("Error sending mail:", err);
+            } else {
+                console.log("Email sent successfully:", info.response);
+            }
         }
-    });
+    );
 }
 
-
-
-
+// ✅ Room Schema
 const RoomSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  status: { type: String, enum: ["free", "occupied"], default: "free" },
-  floor: { type: String, required: true }, // Added floor field
+    name: { type: String, required: true, unique: true },
+    status: { type: String, enum: ["free", "occupied"], default: "free" },
+    floor: { type: String, required: true },
 });
 
 const Room = mongoose.model("Room", RoomSchema);
 module.exports = Room;
-const rooms = [
-    { name: "Room A", status: "free", floor: "1st" },
-    { name: "Room B", status: "occupied", floor: "1st" },
-    { name: "Room C", status: "free", floor: "2nd" },
-    { name: "Room D", status: "occupied", floor: "2nd" },
-    { name: "Room E", status: "free", floor: "3rd" },
-    { name: "Room F", status: "occupied", floor: "3rd" }
-  ];
-  
 
+// ✅ Initialize Rooms
 const initializeRooms = async () => {
     const rooms = await Room.find();
     if (rooms.length === 0) {
         await Room.insertMany([
-            { name: "Room A" },
-            { name: "Room B" },
-            { name: "Room C" },
-            { name: "Room D" },
+            { name: "Room A", status: "free", floor: "1st" },
+            { name: "Room B", status: "occupied", floor: "1st" },
+            { name: "Room C", status: "free", floor: "2nd" },
+            { name: "Room D", status: "occupied", floor: "2nd" },
         ]);
     }
 };
 
-
-// ✅ Fetch all rooms
+// ✅ Get All Rooms
 app.get("/api/shop/rooms", async (req, res) => {
     const rooms = await Room.find();
     res.json(rooms);
 });
 
-// ✅ Book a room
-const User = require("./models/User"); // Import User model
-
-
-// ✅ Generate PDF using Puppeteer
+// ✅ Generate PDF Using Puppeteer
 async function generatePDF(roomName) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -162,16 +136,7 @@ async function generatePDF(roomName) {
         </head>
         <body>
             <h1>📌 Room Booking Confirmation</h1>
-            <p>Dear User,</p>
             <p>Your booking for <strong>Room ${roomName}</strong> has been confirmed.</p>
-            <h2>📋 Room Details:</h2>
-            <ul>
-                <li><strong>🏠 Room Number:</strong> ${roomName}</li>
-                <li><strong>📜 Rules:</strong> No food, Maintain silence, Max 2 people</li>
-                <li><strong>🕐 Timing:</strong> 9 AM - 6 PM</li>
-                <li><strong>📧 Library Contact:</strong> library@vit.ac.in</li>
-            </ul>
-            <p>Thank you for using our service!</p>
         </body>
         </html>
     `;
@@ -190,7 +155,7 @@ async function sendMailWithPDF(email, roomName) {
     const pdfPath = await generatePDF(roomName);
 
     const mailOptions = {
-        from: "shreyashgautam2007@gmail.com",
+        from: process.env.EMAIL_USER,
         to: email,
         subject: "Room Booking Confirmation",
         text: `Your booking for Room "${roomName}" is confirmed.`,
@@ -200,7 +165,7 @@ async function sendMailWithPDF(email, roomName) {
     return transporter.sendMail(mailOptions);
 }
 
-// ✅ Book a Room API
+// ✅ Book a Room
 app.post("/api/shop/book", async (req, res) => {
     try {
         const { roomName, email } = req.body;
@@ -220,7 +185,7 @@ app.post("/api/shop/book", async (req, res) => {
     }
 });
 
-// ✅ Release a room
+// ✅ Release a Room
 app.post("/api/shop/release", async (req, res) => {
     const { roomName } = req.body;
     const room = await Room.findOne({ name: roomName });
@@ -232,33 +197,7 @@ app.post("/api/shop/release", async (req, res) => {
     res.json({ message: `Room "${roomName}" released successfully` });
 });
 
-
-
-const Product = require("./models/Product"); // Ensure correct path
-
-app.post("/admin/add-book", async (req, res) => {
-    try {
-      const { image, title, description, category, brand, totalStock, link } = req.body;
-  
-      // If fields are missing, default to "NaN" or 0
-      const newProduct = new Product({
-        image: image || "NaN",
-        title: title || "NaN",
-        description: description || "NaN",
-        category: category || "NaN",
-        brand: brand || "NaN",
-        totalStock: totalStock !== undefined ? totalStock : 1,
-        link: link || "NaN",
-      });
-  
-      await newProduct.save();
-      res.status(201).json({ message: "✅ Book added successfully!", product: newProduct });
-  
-    } catch (error) {
-      console.error("❌ Error adding book:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
-
-
-  
+// ✅ Start Server
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
