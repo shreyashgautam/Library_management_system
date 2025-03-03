@@ -3,6 +3,7 @@
 ## Contributors
 
 - **Dipsita Rout**
+- **Shreyash Gautam**
 - **Siddharth Seth**
 
 ## Overview
