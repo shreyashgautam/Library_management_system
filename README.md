@@ -6,6 +6,12 @@
 - **Shreyash Gautam**
 - **Siddharth Seth**
 
+
+## App Repo
+https://github.com/sseth345/LIBRARY_MANAGEMENT_APP
+
+
+
 ## Overview
 
 The **Library Management System** is a full-stack web application that allows users to manage books efficiently. It features authentication, separate admin and user access, and integrates RFID/barcode scanning for book management.
