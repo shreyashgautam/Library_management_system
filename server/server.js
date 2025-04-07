@@ -32,7 +32,7 @@ mongoose
 
 app.use(
     cors({
-        origin: "https://library-management-system-git-main-shreyashgautams-projects.vercel.app/",
+        origin: "https://library-management-system-git-main-shreyashgautams-projects.vercel.app",
         methods: ["GET", "POST", "DELETE", "PUT"],
         allowedHeaders: [
             "Content-Type",
