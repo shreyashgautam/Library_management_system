@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 // ✅ Initial state
 const initialState = {
     rooms: [],
@@ -10,23 +12,26 @@ const initialState = {
 
 // ✅ Fetch Rooms
 export const fetchRooms = createAsyncThunk("rooms/fetchRooms", async () => {
-    const { data } = await axios.get("http://localhost:5001/api/shop/rooms");
+    const { data } = await axios.get(`${BASE_URL}/api/shop/rooms`);
     return data;
 });
 
 // ✅ Book a Room
-export const bookRoom = createAsyncThunk("rooms/bookRoom", async (roomName, { rejectWithValue }) => {
-    try {
-        await axios.post("http://localhost:5001/api/shop/book", { roomName });
-        return roomName; // Return booked room name
-    } catch (error) {
-        return rejectWithValue(error.response.data.message);
+export const bookRoom = createAsyncThunk(
+    "rooms/bookRoom",
+    async (roomName, { rejectWithValue }) => {
+        try {
+            await axios.post(`${BASE_URL}/api/shop/book`, { roomName });
+            return roomName; // Return booked room name
+        } catch (error) {
+            return rejectWithValue(error.response?.data?.message || "Booking failed");
+        }
     }
-});
+);
 
 // ✅ Release a Room
 export const releaseRoom = createAsyncThunk("rooms/releaseRoom", async (roomName) => {
-    await axios.post("http://localhost:5001/api/shop/release", { roomName });
+    await axios.post(`${BASE_URL}/api/shop/release`, { roomName });
     return roomName; // Return released room name
 });
 
@@ -51,17 +56,16 @@ const roomSlice = createSlice({
             })
             .addCase(bookRoom.fulfilled, (state, action) => {
                 const room = state.rooms.find((r) => r.name === action.payload);
-                if (room) room.status = "occupied"; // Update state directly
+                if (room) room.status = "occupied";
             })
             .addCase(releaseRoom.fulfilled, (state, action) => {
                 const room = state.rooms.find((r) => r.name === action.payload);
-                if (room) room.status = "free"; // Update state directly
+                if (room) room.status = "free";
             })
             .addCase(bookRoom.rejected, (state, action) => {
-                state.error = action.payload; // Store error message
+                state.error = action.payload;
             });
     },
 });
 
-// ✅ Export reducer
 export default roomSlice.reducer;

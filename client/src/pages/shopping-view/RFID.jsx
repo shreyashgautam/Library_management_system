@@ -162,7 +162,10 @@ const RFID = () => {
     if (!title) return;
 
     try {
-      const response = await fetch(`http://localhost:5001/products/check?title=${encodeURIComponent(title)}`);
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/products/check?title=${encodeURIComponent(title)}`
+      );
+      
       const data = await response.json();
 
       if (data.exists) {

@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const initialState = {
   isLoading: false,
   suggestionList: [],
@@ -10,8 +12,7 @@ const initialState = {
 export const addNewSuggestion = createAsyncThunk(
   "/suggestions/addNewSuggestion",
   async (formData) => {
-    const response = await axios.post("http://localhost:5001/api/shop/suggestions", formData);
-
+    const response = await axios.post(`${BASE_URL}/api/shop/suggestions`, formData);
     return response.data;
   }
 );
@@ -20,10 +21,7 @@ export const addNewSuggestion = createAsyncThunk(
 export const fetchNewSuggestion = createAsyncThunk(
   "/suggestions/fetchNewSuggestion",
   async () => {
-    const response = await axios.get(
-      "http://localhost:5001/api/shop/suggestions/get"
-    );
-
+    const response = await axios.get(`${BASE_URL}/api/shop/suggestions/get`);
     return response.data;
   }
 );
@@ -33,10 +31,9 @@ export const editSuggestion = createAsyncThunk(
   "/suggestions/editSuggestion",
   async ({ suggestionId, formData }) => {
     const response = await axios.put(
-      `http://localhost:5001/api/shop/suggestions/edit/${suggestionId}`,
+      `${BASE_URL}/api/shop/suggestions/edit/${suggestionId}`,
       formData
     );
-
     return response.data;
   }
 );
@@ -46,9 +43,8 @@ export const deleteSuggestion = createAsyncThunk(
   "/suggestions/deleteSuggestion",
   async (suggestionId) => {
     const response = await axios.delete(
-      `http://localhost:5001/api/shop/suggestions/delete/${suggestionId}`
+      `${BASE_URL}/api/shop/suggestions/delete/${suggestionId}`
     );
-
     return response.data;
   }
 );

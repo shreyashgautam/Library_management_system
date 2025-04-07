@@ -68,7 +68,7 @@ function ShoppingCheckout() {
     };
 
     try {
-      const response = await axios.post("http://localhost:5001/api/shop/order/place-order", orderData);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}//api/shop/order/place-order`, orderData);
       if (response.data.success) {
         toast({ title: "Order placed successfully! Check your email for confirmation.", variant: "success" });
       } else {

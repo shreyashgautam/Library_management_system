@@ -106,7 +106,7 @@ const AddBarCode = () => {
     if (!book) return;
   
     try {
-      const response = await fetch("http://localhost:5001/admin/add-book", {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/add-book`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// ✅ Using env variable for backend URL
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const initialState = {
   isLoading: false,
   productList: [],
@@ -10,7 +13,7 @@ export const addNewProduct = createAsyncThunk(
   "/products/addnewproduct",
   async (formData) => {
     const result = await axios.post(
-      "http://localhost:5001/api/admin/products/add",
+      `${BASE_URL}/api/admin/products/add`,
       formData,
       {
         headers: {
@@ -18,7 +21,6 @@ export const addNewProduct = createAsyncThunk(
         },
       }
     );
-
     return result?.data;
   }
 );
@@ -26,10 +28,7 @@ export const addNewProduct = createAsyncThunk(
 export const fetchAllProducts = createAsyncThunk(
   "/products/fetchAllProducts",
   async () => {
-    const result = await axios.get(
-      "http://localhost:5001/api/admin/products/get"
-    );
-
+    const result = await axios.get(`${BASE_URL}/api/admin/products/get`);
     return result?.data;
   }
 );
@@ -38,7 +37,7 @@ export const editProduct = createAsyncThunk(
   "/products/editProduct",
   async ({ id, formData }) => {
     const result = await axios.put(
-      `http://localhost:5001/api/admin/products/edit/${id}`,
+      `${BASE_URL}/api/admin/products/edit/${id}`,
       formData,
       {
         headers: {
@@ -46,7 +45,6 @@ export const editProduct = createAsyncThunk(
         },
       }
     );
-
     return result?.data;
   }
 );
@@ -55,9 +53,8 @@ export const deleteProduct = createAsyncThunk(
   "/products/deleteProduct",
   async (id) => {
     const result = await axios.delete(
-      `http://localhost:5001/api/admin/products/delete/${id}`
+      `${BASE_URL}/api/admin/products/delete/${id}`
     );
-
     return result?.data;
   }
 );
@@ -75,7 +72,7 @@ const AdminProductsSlice = createSlice({
         state.isLoading = false;
         state.productList = action.payload.data;
       })
-      .addCase(fetchAllProducts.rejected, (state, action) => {
+      .addCase(fetchAllProducts.rejected, (state) => {
         state.isLoading = false;
         state.productList = [];
       });
