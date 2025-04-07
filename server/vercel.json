@@ -12,5 +12,12 @@
       "src": "/(.*)",
       "dest": "server.js"
      }
-    ]
+    ],
+     "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "/api/index.js"
+    }
+  ]
+    
    }
