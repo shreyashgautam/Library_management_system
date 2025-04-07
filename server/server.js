@@ -47,7 +47,7 @@ app.use(
 
 app.use(cookieParser());
 app.use(express.json());
-
+app.options("*", cors()); /
 // ✅ Routes
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products", adminProducts);
